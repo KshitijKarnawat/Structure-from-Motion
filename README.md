@@ -25,7 +25,7 @@ Raajith Gadam (UID: raajithg 119461167)
 mkdir Structure-from-Motion
 cd Structure-from-Motion
 git init
-git remote origin add https://github.com/KshitijKarnawat/Structure-from-Motion
+git remote add origin https://github.com/KshitijKarnawat/Structure-from-Motion
 git switch devel
 git pull
 ```
