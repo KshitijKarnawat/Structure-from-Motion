@@ -32,15 +32,15 @@ def getMatches(image1, image2, number):
 
     draw_images = cv.drawMatches(image1, keypoints1, image2, keypoints2, matches[:number], image2_copy, flags=2)
 
-    # cv.imshow("image1_features", image1_features)
-    # cv.waitKey(0)
+    cv.imshow("image1_features", image1_features)
+    cv.waitKey(0)
 
-    # cv.imshow("image2_features", image2_features)
-    # cv.waitKey(0)
+    cv.imshow("image2_features", image2_features)
+    cv.waitKey(0)
 
-    # cv.imshow("Keypoint matches", draw_images)
-    # cv.waitKey(0)
-    # cv.destroyAllWindows()
+    cv.imshow("Keypoint matches", draw_images)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 
     return np.array(points1, dtype = np.int32), np.array(points2, dtype = np.int32)
 
@@ -50,29 +50,38 @@ def getDispartiy(image1, image2, h, w):
         image1_gray = cv.cvtColor(image1, cv.COLOR_BGR2GRAY)
         image2_gray = cv.cvtColor(image2, cv.COLOR_BGR2GRAY)
         stereo = cv.StereoSGBM_create(2,
-                                      256,
-                                      21,
+                                      144,
+                                      13,
                                       speckleRange=2,
-                                      speckleWindowSize=200)
+                                      speckleWindowSize=100)
         disparity = stereo.compute(image1_gray, image2_gray)
 
         return disparity
 
 
 def main():
-    image1 = cv.imread("../chess/im0.png")
-    image2 = cv.imread("../chess/im1.png")
+    image1 = cv.imread("../Data/left_camera/1.png")
+    image2 = cv.imread("../Data/right_camera/1.png")
 
-    intrinsic_matrix = np.array([[1733.74, 0, 792.27],
-                                        [0, 1733.74, 541.89],
-                                        [0, 0, 1]])
+    # Chess K Matrix
+    # intrinsic_matrix = np.array([[1733.74, 0, 792.27],
+    #                                     [0, 1733.74, 541.89],
+    #                                     [0, 0, 1]])
+
+    intrinsic_matrix = np.array([[794.34441552, 0, 324.85826559],
+                                 [0, 782.03233322, 196.60789711],
+                                 [0, 0, 1]])
 
     points1, points2 = getMatches(image1, image2, 100)
 
-    fundamental_matrix, _ = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC, 0.1, 0.99)
-
+    fundamental_matrix, _ = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC, 1, 0.99)
+    count = 0
+    for i in _:
+         if i == 1:
+              count+=1
+    print(count)
     essential_matrix = cv.findEssentialMat(points1, points2, intrinsic_matrix, cv.RANSAC, 0.99, 0.1)
-    # print("points2", fundamental_matrix )
+    print("points2", fundamental_matrix )
 
 
     h1, w1 = image1.shape[:2]
@@ -80,8 +89,8 @@ def main():
 
     _, H1, H2 = cv.stereoRectifyUncalibrated(points1, points2, fundamental_matrix, imgSize=(w1, h1))
     
-    # print("\nH1 =", H1) 
-    # print("\nH2 =", H2)
+    print("\nH1 =", H1) 
+    print("\nH2 =", H2)
 
     disparity = getDispartiy(image1, image2, image1.shape[0], image1.shape[1])
     plt.imshow(disparity, cmap='jet', interpolation='gaussian')
@@ -95,8 +104,6 @@ def main():
     image1 = cv.cvtColor(image1, cv.COLOR_BGR2RGB)
     rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(o3d.geometry.Image(image1), depth_as_img, convert_rgb_to_intensity=False)
     pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd, intrinsic)
-
-    # o3d.pipelines.color_map.color_map_optimization(mesh, rgbd_images, camera, option)
 
     # flip the orientation, so it looks upright, not upside-down
     pcd.transform([[1,0,0,0],[0,-1,0,0],[0,0,1,0],[0,0,0,1]])
