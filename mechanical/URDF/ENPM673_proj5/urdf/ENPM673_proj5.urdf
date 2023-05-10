@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="ENPM673_proj5">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00109918012943134 0.00583609620014158 0.0100322510500422"
+        rpy="0 0 0" />
+      <mass
+        value="0.539393783542884" />
+      <inertia
+        ixx="0.000556207346383151"
+        ixy="-5.19603785227339E-20"
+        ixz="-7.22829568079667E-06"
+        iyy="0.00129964254288098"
+        iyz="1.80859623888089E-20"
+        izz="0.00177313390839128" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="FL_wheel">
+    <inertial>
+      <origin
+        xyz="-1.73472347597681E-18 1.38777878078145E-17 0.0323201178441002"
+        rpy="0 0 0" />
+      <mass
+        value="0.0346791977367494" />
+      <inertia
+        ixx="1.41585015301741E-05"
+        ixy="2.01170324972896E-21"
+        ixz="2.40733176758587E-22"
+        iyy="1.41585015301741E-05"
+        iyz="7.17000380658435E-22"
+        izz="2.53540976405827E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/FL_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/FL_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_joint"
+    type="continuous">
+    <origin
+      xyz="0.06441 0.055836 0.0098254"
+      rpy="-1.5708 1.5049 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="FL_wheel" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="FR_wheel">
+    <inertial>
+      <origin
+        xyz="9.71445146547012E-17 1.59594559789866E-16 0.0323201178441002"
+        rpy="0 0 0" />
+      <mass
+        value="0.0346791977367494" />
+      <inertia
+        ixx="1.41585015301741E-05"
+        ixy="-1.74700545371199E-21"
+        ixz="-2.22040101327799E-21"
+        iyy="1.41585015301741E-05"
+        iyz="1.14510867773856E-21"
+        izz="2.53540976405827E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/FR_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/FR_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_joint"
+    type="continuous">
+    <origin
+      xyz="0.06441 -0.044164 0.0098254"
+      rpy="1.5708 0.058924 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="FR_wheel" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="BR_wheel">
+    <inertial>
+      <origin
+        xyz="6.93889390390723E-18 6.93889390390723E-18 0.0323201178441002"
+        rpy="0 0 0" />
+      <mass
+        value="0.0346791977367494" />
+      <inertia
+        ixx="1.41585015301741E-05"
+        ixy="0"
+        ixz="3.08289849085421E-22"
+        iyy="1.41585015301741E-05"
+        iyz="6.43955883419343E-21"
+        izz="2.53540976405827E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/BR_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/BR_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BR_joint"
+    type="continuous">
+    <origin
+      xyz="-0.06759 -0.044164 0.0098254"
+      rpy="1.5708 -0.827 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="BR_wheel" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="BL_wheel">
+    <inertial>
+      <origin
+        xyz="-7.35522753814166E-16 2.98372437868011E-16 0.0323201178441002"
+        rpy="0 0 0" />
+      <mass
+        value="0.0346791977367494" />
+      <inertia
+        ixx="1.41585015301741E-05"
+        ixy="3.70576914423756E-21"
+        ixz="2.63020652373899E-21"
+        iyy="1.41585015301741E-05"
+        iyz="3.6202632958349E-24"
+        izz="2.53540976405827E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/BL_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ENPM673_proj5/meshes/BL_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BL_joint"
+    type="continuous">
+    <origin
+      xyz="-0.06759 0.055836 0.0098254"
+      rpy="1.5708 0.091324 -3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="BL_wheel" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>
