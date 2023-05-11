@@ -49,32 +49,38 @@ def getDispartiy(image1, image2, h, w):
         disparity = np.zeros((h,w), np.uint8)
         image1_gray = cv.cvtColor(image1, cv.COLOR_BGR2GRAY)
         image2_gray = cv.cvtColor(image2, cv.COLOR_BGR2GRAY)
-        stereo = cv.StereoSGBM_create(2,
-                                      144,
-                                      13,
-                                      speckleRange=2,
-                                      speckleWindowSize=100)
+        stereo = cv.StereoSGBM_create(16,
+                                      128,
+                                      19)
+                                    #   speckleRange=2,
+                                    #   speckleWindowSize=200)
         disparity = stereo.compute(image1_gray, image2_gray)
 
         return disparity
 
 
 def main():
-    image1 = cv.imread("../Data/left_camera/1.png")
-    image2 = cv.imread("../Data/right_camera/1.png")
 
-    # Chess K Matrix
-    # intrinsic_matrix = np.array([[1733.74, 0, 792.27],
-    #                                     [0, 1733.74, 541.89],
-    #                                     [0, 0, 1]])
+    test = int(input())
+    if test == 1:
+        image1 = cv.imread("../chess/im0.png")
+        image2 = cv.imread("../chess/im1.png")
 
-    intrinsic_matrix = np.array([[794.34441552, 0, 324.85826559],
-                                 [0, 782.03233322, 196.60789711],
-                                 [0, 0, 1]])
+        # Chess K Matrix
+        intrinsic_matrix = np.array([[1733.74, 0, 792.27],
+                                            [0, 1733.74, 541.89],
+                                            [0, 0, 1]])
+    if test == 0:
+        image1 = cv.imread("../Data/left_camera/left1.png")
+        image2 = cv.imread("../Data/right_camera/right1.png")
+
+        intrinsic_matrix = np.array([[794.34441552, 0, 324.85826559],
+                                        [0, 782.03233322, 196.60789711],
+                                        [0, 0, 1]])
 
     points1, points2 = getMatches(image1, image2, 100)
 
-    fundamental_matrix, _ = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC, 1, 0.99)
+    fundamental_matrix, _ = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC, 0.1, 0.99)
     count = 0
     for i in _:
          if i == 1:
