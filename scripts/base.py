@@ -1,3 +1,21 @@
+#!/usr/bin/env python3
+
+"""
+ * @copyright Copyright (c) 2023
+ * @file zhang.py
+ * @author Kshitij Karnawat (kshitij@umd.edu)
+ * @author Hritvik Choudhari (hac@umd.edu)
+ * @author Abhimanyu Saxena (asaxena4@umd.edu)
+ * @author Mudit Singal (msingal@umd.edu)
+ * @author Raajit Gadam (raajitg@umd.edu)
+
+ * @brief Question 2 for Porject 3
+ * @version 0.1
+ * @date 2023-04-17
+ * 
+ * 
+"""
+
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
