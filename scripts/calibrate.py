@@ -2,9 +2,9 @@
 
 """
  * @copyright Copyright (c) 2023
- * @file zhang.py
+ * @file calibrate.py
  * @author Kshitij Karnawat (kshitij@umd.edu)
- * @brief Question 2 for Porject 3
+ * @brief Camera Calibration script which uses OpenCV
  * @version 0.1
  * @date 2023-04-17
  * 
@@ -44,7 +44,7 @@ for i in images:
         detected_points.append(corners)
         cv.drawChessboardCorners(img, (9,6), corners, ret)
         cv.imshow('img', img)
-        cv.waitKey()
+        cv.waitKey(1000)
 
 cv.destroyAllWindows()
 

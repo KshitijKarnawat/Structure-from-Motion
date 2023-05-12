@@ -2,14 +2,10 @@
 
 """
  * @copyright Copyright (c) 2023
- * @file zhang.py
+ * @file base.py
  * @author Kshitij Karnawat (kshitij@umd.edu)
  * @author Hritvik Choudhari (hac@umd.edu)
- * @author Abhimanyu Saxena (asaxena4@umd.edu)
- * @author Mudit Singal (msingal@umd.edu)
- * @author Raajit Gadam (raajitg@umd.edu)
-
- * @brief Question 2 for Porject 3
+ * @brief 
  * @version 0.1
  * @date 2023-04-17
  * 
