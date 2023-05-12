@@ -7,6 +7,19 @@ import glob
 
 
 def getMatches(image1, image2, number):
+    """
+        Initialize a new Contact object.
+
+        Args:
+            image1 (cv::Mat): The first image
+            image2 (cv::Mat): The second image
+            number (int): Number of matches to consider
+
+        Returns:
+            points1 (numpy array, int32): Feature Points for first image
+            points2 (numpy array, int32): Feature Points for second image
+
+    """
     sift = cv.SIFT_create()
 
     keypoints1, descriptors1 = sift.detectAndCompute(image1,None)
@@ -14,7 +27,9 @@ def getMatches(image1, image2, number):
 
     bf = cv.BFMatcher(cv.NORM_L2, crossCheck=True)
     matches = bf.match(descriptors1, descriptors2)
+
     matches = sorted(matches, key = lambda x:x.distance)
+  
     print("No. of matching features found =",len(matches))
     points1 = []
     points2 = []
@@ -24,7 +39,7 @@ def getMatches(image1, image2, number):
         x2, y2 = keypoints2[i.trainIdx].pt
         points1.append([x1, y1])
         points2.append([x2, y2])
-        
+
     image1_copy = image1.copy()
     image2_copy = image2.copy()
 
@@ -33,84 +48,109 @@ def getMatches(image1, image2, number):
 
     draw_images = cv.drawMatches(image1, keypoints1, image2, keypoints2, matches[:number], image2_copy, flags=2)
 
-    # cv.imshow("image1_features", image1_features)
-    # cv.waitKey(0)
+    cv.imshow("image1_features", image1_features)
+    cv.waitKey(0)
 
-    # cv.imshow("image2_features", image2_features)
-    # cv.waitKey(0)
+    cv.imshow("image2_features", image2_features)
+    cv.waitKey(0)
 
-    # cv.imshow("Keypoint matches", draw_images)
-    # cv.waitKey(0)
-    # cv.destroyAllWindows()
+    cv.imshow("Keypoint matches", draw_images)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 
     return np.array(points1, dtype = np.int32), np.array(points2, dtype = np.int32)
 
 
 def getDispartiy(image1, image2, h, w):
-        disparity = np.zeros((h,w), np.uint8)
-        image1_gray = cv.cvtColor(image1, cv.COLOR_BGR2GRAY)
-        image2_gray = cv.cvtColor(image2, cv.COLOR_BGR2GRAY)
-        stereo = cv.StereoSGBM_create(16,
-                                      128,
-                                      19)
-                                    #   speckleRange=2,
-                                    #   speckleWindowSize=200)
-        disparity = stereo.compute(image1_gray, image2_gray)
+    """
+        Initialize a new Contact object.
 
-        return disparity
+        Args:
+            image1 (cv::Mat): The first image
+            image2 (cv::Mat): The second image
+            h (int): height of image
+            w (int): width of image
+
+        Returns:
+            disparity (image matrix): disparity of the stereo image
+
+    """
+
+    disparity = np.zeros((h,w), np.uint8)
+    image1_gray = cv.cvtColor(image1, cv.COLOR_BGR2GRAY)
+    image2_gray = cv.cvtColor(image2, cv.COLOR_BGR2GRAY)
+    
+    stereo = cv.StereoSGBM_create(1,
+                                    128,
+                                    3,
+                                speckleRange=1)
+                                # speckleWindowSize=50)
+    disparity = stereo.compute(image1_gray, image2_gray)
+
+    return disparity
 
 
 def main():
+    # pcds= []
+    print("loading images")
+    image1 = cv.imread("../Data/left2.jpg")
+    image2 = cv.imread("../Data/right2.jpg")
 
-    pcds= []
-    image_left = glob.glob('../Data/left_camera/*.png')
-    image_right = glob.glob('../Data/right_camera/*.png')
-  
-    intrinsic_matrix = np.array([[794.34441552, 0, 324.85826559],
-                                    [0, 782.03233322, 196.60789711],
-                                    [0, 0, 1]])
+    image1 = cv.resize(image1, (int(image1.shape[1] * 0.5), int(image1.shape[0] * 0.5)), interpolation=cv.INTER_AREA)
+    image2 = cv.resize(image2, (int(image2.shape[1] * 0.5), int(image2.shape[0] * 0.5)), interpolation=cv.INTER_AREA)
+
+    print("images loaded")
+    intrinsic_matrix = np.array([[1552.58610, 0, 768.938827],
+                                 [0, 1552.57499, 1006.09656],
+                                 [0, 0, 1]])
+
+
+    points1, points2 = getMatches(image1, image2, 1000)
+
+    fundamental_matrix, _ = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC, 0.5, 0.99)
+    print("\nF = ", fundamental_matrix )
+
+    # essential_matrix = cv.findEssentialMat(points1, points2, intrinsic_matrix, cv.RANSAC, 0.99, 0.1)
+
+    h1, w1 = image1.shape[:2]
+
+    _, H1, H2 = cv.stereoRectifyUncalibrated(points1, points2, fundamental_matrix, imgSize=(w1, h1))
     
-    for i in range(len(image_left)):
-        image1 = cv.imread(image_left[i])
-        image2 = cv.imread(image_right[i])
+    print("\nH1 =", H1) 
+    print("\nH2 =", H2)
 
-        points1, points2 = getMatches(image1, image2, 100)
-
-        fundamental_matrix, _ = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC, 1, 0.99)
-        count = 0
-        for i in _:
-            if i == 1:
-                count+=1
-        print(count)
-        essential_matrix = cv.findEssentialMat(points1, points2, intrinsic_matrix, cv.RANSAC, 0.99, 0.1)
-        print("F",i," = ", fundamental_matrix )
+    disparity = getDispartiy(image1, image2, image1.shape[0], image1.shape[1])
+    plt.imshow(disparity, cmap='jet', interpolation='gaussian')
+    plt.show()
 
 
-        h1, w1 = image1.shape[:2]
-        h2, w2 = image2.shape[:2]
+    ## TODO: Create a function for the code below 
+    # Point Cloud Generation from disparity(depth) and RGB Image
+    image1 = cv.cvtColor(image1, cv.COLOR_BGR2RGB)
 
-        _, H1, H2 = cv.stereoRectifyUncalibrated(points1, points2, fundamental_matrix, imgSize=(w1, h1))
-        
-        # print("\nH1 =", H1) 
-        # print("\nH2 =", H2)
+    disparity = np.float32(disparity/16) # As mentioned in documentation (Required step)
 
-        disparity = getDispartiy(image1, image2, image1.shape[0], image1.shape[1])
-        plt.imshow(disparity, cmap='jet', interpolation='gaussian')
-        plt.show()
+    # Convert Depth to Open3D Image Format
+    depth_as_img = o3d.geometry.Image((np.ascontiguousarray(disparity)).astype(np.float32))    
+    
+    # Intrinsic Parameter in Open3D Format
+    intrinsic = o3d.camera.PinholeCameraIntrinsic(image1.shape[1], image1.shape[0], intrinsic_matrix[0,0], intrinsic_matrix[0,0], intrinsic_matrix[0,2], intrinsic_matrix[1,2])
+   
+    # Generte RGBD Image
+    rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(o3d.geometry.Image(image1), depth_as_img, convert_rgb_to_intensity=False)
+    
+    # Generate Point Cloud
+    pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd, intrinsic)
+   
+    # flip the orientation, so it looks upright, not upside-down
+    pcd.transform([[1,0,0,0],[0,-1,0,0],[0,0,1,0],[0,0,0,1]])
+    
+    # pcds.append(pcd)
+    
+    ## TODO: Stitch Multiple Point Clouds to construct Model
 
-        disparity = np.float32(disparity/16)
-
-        depth_as_img = o3d.geometry.Image((np.ascontiguousarray(disparity)).astype(np.float32))    
-        
-        intrinsic = o3d.camera.PinholeCameraIntrinsic(image1.shape[1], image1.shape[0], intrinsic_matrix[0,0], intrinsic_matrix[0,0], intrinsic_matrix[0,2], intrinsic_matrix[1,2])
-        image1 = cv.cvtColor(image1, cv.COLOR_BGR2RGB)
-        rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(o3d.geometry.Image(image1), depth_as_img, convert_rgb_to_intensity=False)
-        pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd, intrinsic)
-        # flip the orientation, so it looks upright, not upside-down
-        pcd.transform([[1,0,0,0],[0,-1,0,0],[0,0,1,0],[0,0,0,1]])
-        pcds.append(pcd)
-
-    o3d.visualization.draw_geometries(pcds) 
+    # Point Cloud Visualization
+    o3d.visualization.draw_geometries([pcd]) 
 
 if __name__ == "__main__":
     main()
