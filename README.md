@@ -12,11 +12,11 @@ Structure from motion is a low-cost alternative to construct 3D representation o
 
 ## Team Members
 
-Kshitij Karnawat (UID: kshitij 119188651)
-Hritvik Choudhary (UID: hac 119208793)
-Abhimanyu Saxena (UID: asaxena4 119342763)
-Mudit Singal (UID: msingal 119262689)
-Raajith Gadam (UID: raajithg 119461167)
+1. Kshitij Karnawat (<kshitij@terpmail.edu>)
+2. Hritvik Choudhary (<hac@umd.edu>)
+3. Abhimanyu Saxena (<asaxena4@umd.edu>)
+4. Mudit Singal (<msingal@umd.edu>)
+5. Raajith Gadam (<raajithg@umd.edu>)
 
 ## Dependencies
 
@@ -27,19 +27,47 @@ Raajith Gadam (UID: raajithg 119461167)
 - open3d
 - glob
 - tqdm
+- glob
+- os
+- errno
+- torch
+- math
+- einops
+- timm
+- wandb
+- PIL
+- random
+- json
+- sklearn
 
 ## Running
 
-Calibrate the camera using the `calibrate.py` script. Store all the calibration images in  `Data/Calibration\ images` folder.
+Calibrate the camera using the `calibrate.py` script. Store all the calibration images in  `Data/Calibration images` folder.
 
 ```sh
 cd scripts
 python3 calibrate.py
 ```
 
-To run the code
+You can save all the images in the `Data` folder instead if hardware is not available.
+
+To get the depth estimation using the stereo method run the following lines.
 
 ```sh
 cd scripts
-python3 base.py
+python3 generate_point_cloud.py
+```
+
+To get the depth estimation using the DPT run the following lines.
+
+```sh
+cd scripts
+python3 depth_nn.py
+```
+
+To get the stitched point cloud run the following lines.
+
+```sh
+cd scripts
+python3 generate_point_cloud.py
 ```
