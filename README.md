@@ -49,7 +49,7 @@ cd scripts
 python3 calibrate.py
 ```
 
-You can save all the images in the `Data` folder instead if hardware is not available.
+You can save all the images in the `Data` folder instead if hardware is not available. Please refer to the ros_dev branch for code required for the Nvidia Jetson Nano.
 
 To get the depth estimation using the stereo method run the following lines.
 
