@@ -40,6 +40,12 @@ Structure from motion is a low-cost alternative to construct 3D representation o
 - json
 - sklearn
 
+To install the dependencies.
+
+```sh
+pip install -r requirements.txt
+```
+
 ## Running
 
 Calibrate the camera using the `calibrate.py` script. Store all the calibration images in  `Data/Calibration images` folder.
