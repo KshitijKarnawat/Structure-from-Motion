@@ -21,6 +21,11 @@ Raajith Gadam (UID: raajithg 119461167)
 
 ## How to Setup Repo in Local Workspace
 
+### Run the following if you encounter error while accessing serial port
+```sh
+sudo chmod -R 777 /dev/ttyUSB0
+```
+
 ```sh
 mkdir Structure-from-Motion
 cd Structure-from-Motion
