@@ -1,9 +1,11 @@
 # Structure-from-Motion
+
 Final Project for ENPM673
 
 ## Overview
 
-To construct a 3D point cloud of the surroundings using a mobile ground robot (Map Generation). The robot scans it's surroundings by collecting images from different view points and processes it to reconstruct the space in 3D using SfM. 
+To construct a 3D point cloud of the surroundings using a mobile ground robot (Map Generation). The robot scans it's surroundings by collecting images from different view points and processes it to reconstruct the space in 3D using SfM.
+
 
 ## Abstract
 
@@ -11,21 +13,68 @@ Structure from motion is a low-cost alternative to construct 3D representation o
 
 ## Team Members
 
-Kshitij Karnawat (UID: kshitij 119188651)
-Hritvik Choudhary (UID: hac 119208793)
-Abhimanyu Saxena (UID: asaxena4 119342763)
-Mudit Singal (UID: msingal 119262689)
-Raajith Gadam (UID: raajithg 119461167) 
+1. Kshitij Karnawat (<kshitij@terpmail.edu>)
+2. Hritvik Choudhary (<hac@umd.edu>)
+3. Abhimanyu Saxena (<asaxena4@umd.edu>)
+4. Mudit Singal (<msingal@umd.edu>)
+5. Raajith Gadam (<raajithg@umd.edu>)
 
 ## Dependencies
 
-## How to Setup Repo in Local Workspace
+- numpy
+- matplotlib
+- opencv-python
+- opencv-contrib-python
+- open3d
+- glob
+- tqdm
+- glob
+- os
+- errno
+- torch
+- math
+- einops
+- timm
+- wandb
+- PIL
+- random
+- json
+- sklearn
+
+To install the dependencies.
 
 ```sh
-mkdir Structure-from-Motion
-cd Structure-from-Motion
-git init
-git remote add origin https://github.com/KshitijKarnawat/Structure-from-Motion
-git switch devel
-git pull
+pip install -r requirements.txt
+```
+
+## Running
+
+Calibrate the camera using the `calibrate.py` script. Store all the calibration images in  `Data/Calibration images` folder.
+
+```sh
+cd scripts
+python3 calibrate.py
+```
+
+You can save all the images in the `Data` folder instead if hardware is not available. Please refer to the ros_dev branch for code required for the Nvidia Jetson Nano.
+
+To get the depth estimation using the stereo method run the following lines.
+
+```sh
+cd scripts
+python3 generate_point_cloud.py
+```
+
+To get the depth estimation using the DPT run the following lines.
+
+```sh
+cd scripts
+python3 depth_nn.py
+```
+
+To get the stitched point cloud run the following lines.
+
+```sh
+cd scripts
+python3 generate_point_cloud.py
 ```
