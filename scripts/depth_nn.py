@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+
+"""
+ * @copyright Copyright (c) 2023
+ * @file calibrate.py
+ * @author Kshitij Karnawat (kshitij@umd.edu)
+ * @brief Calculate Depth using DPT
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * 
+"""
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
@@ -11,14 +23,12 @@ def downSample(image, factor):
         image = cv.pyrDown(image, dstsize=(col // 2, row // 2))
     return image
 
-
 model_path = "../models/"
 model_name = "model-small.onnx"
 model = cv.dnn.readNet(model_path + model_name)
 
 if model.empty():
     print("Model not loaded")
-
 
 frame = cv.imread("../Data/rotate/left/IMG_20230516_234015.jpg")
 
@@ -34,8 +44,6 @@ output = model.forward()
 output = output[0,:,:]
 output = cv.resize(output, (w,h))
 output = cv.normalize(output, None, 0, 255, norm_type=cv.NORM_MINMAX, dtype= cv.CV_32F)
-
-# frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
 
 cv.imwrite('colorimg.jpg',frame)
 cv.imwrite('depth.png',output)

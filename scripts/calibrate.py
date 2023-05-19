@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2023
  * @file calibrate.py
  * @author Kshitij Karnawat (kshitij@umd.edu)
- * @brief Camera Calibration script which uses OpenCV
+ * @brief Camera Calibration script which uses Zhang's Method.
  * @version 0.1
  * @date 2023-04-17
  * 
@@ -30,11 +30,10 @@ for i in range(0,6):
 
 points = np.array(points, dtype=np.float32)
 
-images = glob.glob('../Images/*.jpg')
+images = glob.glob('../Images/*.jpg') # Change Path as needed
 
 for i in images:
     img = cv.imread(i)
-    # img = cv.resize(img, (int(img.shape[1] * 0.5), int(img.shape[0] * 0.5)), interpolation=cv.INTER_AREA)
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     ret, corners = cv.findChessboardCorners(gray, (9,6), cv.CALIB_CB_ADAPTIVE_THRESH)
