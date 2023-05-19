@@ -4,7 +4,7 @@ Final Project for ENPM673
 
 ## Overview
 
-To construct a 3D point cloud of the surroundings using a mobile ground robot (Map Generation). The robot scans it's surroundings by collecting images from different view points and processes it to reconstruct the space in 3D using SfM. 
+To construct a 3D point cloud of the surroundings using a mobile ground robot (Map Generation). The robot scans it's surroundings by collecting images from different view points and processes it to reconstruct the space in 3D using SfM.
 
 ## Abstract
 
