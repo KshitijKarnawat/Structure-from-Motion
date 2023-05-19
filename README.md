@@ -1,13 +1,9 @@
 # Structure-from-Motion
-Final Project for ENPM673
+Final Project for ENPM673 ROS package and Jetson codes
 
 ## Overview
 
-To construct a 3D point cloud of the surroundings using a mobile ground robot (Map Generation). The robot scans it's surroundings by collecting images from different view points and processes it to reconstruct the space in 3D using SfM. 
-
-## Abstract
-
-Structure from motion is a low-cost alternative to construct 3D representation of an object. With the increase in the cost of 3D ranging sensors like LIDAR, laser scanners etc. It makes sense to use photogrammetry techniques to map a space in 3D using 2D images taken from different viewpoints. In the scenario of indoor mapping, due to complexity and closeness of the space, using SfM and minimizing the reprojection error of the matching points we can effectively perform 3D reconstruction using fewer images. The SfM pipeline starts with capturing multiple images of the indoor space from varying viewpoints, followed by feature extraction, and matching, geometric verification and refining construction. This serves as the foundation for our model reconstruction. The scene points are triangulated, and outliers are filtered using RANSAC to give a robust estimation of the space in 3D. To fulfill the requirements of the project, the data is collected using a high-definition camera (Intel Realsense) mounted on a mobile ground robot and processing is done onboard using Jetson Nano. This technique can be used to scan and reconstruct land terrains, warehouses and in autonomous vehicles to map its environment.
+Images were captured using 2 Raspberry pi cameras setup in custom 3D printed mounts, the interface used is CSI through CSI camera headeers. Also contains 
 
 ## Team Members
 
@@ -20,17 +16,52 @@ Raajith Gadam (UID: raajithg 119461167)
 ## Dependencies
 
 ## How to Setup Repo in Local Workspace
+**Works with ROS melodic**
+You have to use ROS melodic and python 2.7 for majority of the codes in this repo.
+1. Download the folder sfm from the git repo or git clone in local machine
+2. Copy and paste the folder sfm into your catkin workspace (~/catkin_ws/src)
+3. cd ~/catkin_ws
+4. catkin_make
+5. cd ~/catkin_ws/src/sfm/scripts
+6. chmod +x *.py
+7. ./rotate_and_pub.py to run the rotate and publish stereo images
+8. ./publish_stereo_imgs_ros.py to run code to publish stereo images captured by jetson nano
+9. ./get_depthmap_nn.py to run the code to rotate the robot, capture stereo images, compute the depth map using DPT model from right images and publish as separate topics on the ROS network
 
-### Run the following if you encounter error while accessing serial port
+
+
+### Standalone codes
+The python files: _capture_calib_image.py_ and _get_depth_map.py_ are standalone python files that can be run on the jetson nano to capture images from a stereo setup and get depth map from built-in opencv functions.
+Jetson nano standard image already ships with numpy and opencv. You can install matplotlib and pyserial(if required) using the following commands:
+```sh
+sudp apt-get install python-pip
+sudo apt-get install python3-pip
+pip install pyserial
+pip3 install pyserial
+```
+
+
+#### Instructions to run _capture_calib_image.py_:
+```sh
+python capture_calib_image.py
+press f to capture images and save to the same folder
+```
+
+#### Instructions to run _get_depth_map.py_:
+```sh
+python3 get_depth_map.py
+or 
+python get_depth_map.py
+```
+
+#### Arduino code:
+1. Make connections between arduino nano and motor driver as per the pinout given in ino file
+2. Flash the Arduino with the hbridge_script.ino
+3. Connect the Arduino nano and Jetson nano with a usb cable for arduino
+
+
+### Run the following at jetson nano side if you encounter error while accessing serial port
 ```sh
 sudo chmod -R 777 /dev/ttyUSB0
 ```
 
-```sh
-mkdir Structure-from-Motion
-cd Structure-from-Motion
-git init
-git remote add origin https://github.com/KshitijKarnawat/Structure-from-Motion
-git switch devel
-git pull
-```
