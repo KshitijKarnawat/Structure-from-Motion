@@ -13,7 +13,7 @@ Structure from motion is a low-cost alternative to construct 3D representation o
 
 ## Team Members
 
-1. Kshitij Karnawat (<kshitij@terpmail.edu>)
+1. Kshitij Karnawat (<kshitij@terpmail.umd.edu>)
 2. Hritvik Choudhary (<hac@umd.edu>)
 3. Abhimanyu Saxena (<asaxena4@umd.edu>)
 4. Mudit Singal (<msingal@umd.edu>)
