@@ -1,6 +1,8 @@
 # Structure-from-Motion
 
-Final Project for ENPM673
+Final Project for ENPM673 
+
+Project Report can be found [here](https://arxiv.org/abs/2306.06360)
 
 ## Overview
 
